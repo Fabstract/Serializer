@@ -4,6 +4,7 @@ namespace Fabs\Component\Serializer;
 
 use Fabs\Component\Serializer\Encoder\EncoderInterface;
 use Fabs\Component\Serializer\Normalizer\NormalizerInterface;
+use Fabs\Component\Serializer\Normalizer\Type;
 
 interface SerializerInterface
 {
