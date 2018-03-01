@@ -11,7 +11,7 @@ interface NormalizerInterface
     function normalize($value);
 
     /**
-     * @param $value
+     * @param array $value
      * @param Type $type
      * @return mixed
      */

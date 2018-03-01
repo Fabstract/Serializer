@@ -2,6 +2,7 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
+use Fabs\Component\Assert\Assert;
 use Traversable;
 
 class NormalizationMetadata implements \IteratorAggregate
@@ -16,7 +17,10 @@ class NormalizationMetadata implements \IteratorAggregate
      */
     public function registerType($property_name, $type)
     {
-        // todo
+        Assert::assertNonEmptyString($property_name, false, 'property_name');
+        Assert::assertType($type, Type::class, 'type');
+
+        $this->type_lookup[$property_name] = $type;
         return $this;
     }
 
