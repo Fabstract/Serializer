@@ -2,7 +2,7 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
-use Fabs\Component\Assert\Assert;
+use Fabs\Component\Serializer\Assert;
 
 class Type
 {
