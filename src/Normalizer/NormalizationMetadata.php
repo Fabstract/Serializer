@@ -17,8 +17,8 @@ class NormalizationMetadata implements \IteratorAggregate
      */
     public function registerType($property_name, $type)
     {
-        Assert::assertNonEmptyString($property_name, false, 'property_name');
-        Assert::assertType($type, Type::class, 'type');
+        Assert::isNotEmptyString($property_name, false, 'property_name');
+        Assert::isType($type, Type::class, 'type');
 
         $this->type_lookup[$property_name] = $type;
         return $this;

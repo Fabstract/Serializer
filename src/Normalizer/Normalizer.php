@@ -33,7 +33,7 @@ class Normalizer implements NormalizerInterface
      */
     private function normalizeNormalizableInterface($value)
     {
-        Assert::assertType($value, NormalizableInterface::class, 'value');
+        Assert::isType($value, NormalizableInterface::class, 'value');
 
         $response = [];
         $reflection_class = new \ReflectionClass(get_class($value));
