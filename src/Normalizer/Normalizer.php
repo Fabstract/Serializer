@@ -2,7 +2,7 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
-use Fabs\Component\Assert\Assert;
+use Fabs\Component\Serializer\Assert;
 use Fabs\Component\Serializer\Exception\Exception;
 
 class Normalizer implements NormalizerInterface
@@ -16,6 +16,13 @@ class Normalizer implements NormalizerInterface
      */
     public function normalize($value)
     {
+        $allowed_type_list =
+        [
+            NormalizableInterface::class,
+            \JsonSerializable::class
+        ];
+        Assert::isOneOfTypes($value, $allowed_type_list, 'value');
+
         if ($value instanceof NormalizableInterface) {
             return $this->normalizeNormalizableInterface($value);
         } else if ($value instanceof \JsonSerializable) {
