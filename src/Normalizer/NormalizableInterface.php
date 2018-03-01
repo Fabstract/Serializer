@@ -7,5 +7,5 @@ interface NormalizableInterface
     /**
      * @return NormalizationMetadata
      */
-    function getNormalizationMetadata();
+    public function getNormalizationMetadata();
 }

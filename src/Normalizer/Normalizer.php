@@ -7,24 +7,47 @@ use Fabs\Component\Serializer\Exception\Exception;
 
 class Normalizer implements NormalizerInterface
 {
+    #region Normalize
+
     /**
-     * @param NormalizableInterface $value
+     * @param NormalizableInterface|\JsonSerializable $value
      * @return array
      * @throws Exception
      */
-    function normalize($value)
+    public function normalize($value)
     {
-        return $this->normalizeNormalizableInterface($value);
+        if ($value instanceof NormalizableInterface) {
+            return $this->normalizeNormalizableInterface($value);
+        } else if ($value instanceof \JsonSerializable) {
+            return $this->normalizeInternal($value->jsonSerialize());
+        }
+
+        throw new Exception('cannot normalize');
     }
 
     /**
-     * @param array $value
-     * @param Type $type
-     * @return mixed
+     * @param mixed $value
+     * @return mixed|null
+     * @throws Exception
      */
-    function denormalize($value, $type)
+    private function normalizeInternal($value)
     {
-        // TODO: Implement denormalize() method.
+        if ($value === null) {
+            return null;
+        }
+
+        $type = gettype($value);
+        if ($type === 'resource' || $type === 'unknown type') {
+            throw new Exception('resource or unknown type cannot normalize');
+        }
+
+        if ($type === 'object') {
+            return $this->normalize($value);
+        } else if ($type === 'array') {
+            return $this->normalizeArray($value);
+        }
+
+        return $value;
     }
 
     /**
@@ -33,11 +56,9 @@ class Normalizer implements NormalizerInterface
      */
     private function normalizeNormalizableInterface($value)
     {
-        Assert::isType($value, NormalizableInterface::class, 'value');
-
         $response = [];
-        $reflection_class = new \ReflectionClass(get_class($value));
 
+        $reflection_class = new \ReflectionClass(get_class($value));
         $properties = $reflection_class->getProperties();
         foreach ($properties as $property) {
             $property_value = $property->getValue($value);
@@ -47,42 +68,107 @@ class Normalizer implements NormalizerInterface
         return $response;
     }
 
+
     /**
-     * @param mixed $property_value
-     * @return mixed|null
-     * @throws Exception
+     * @param array $array
+     * @return array
      */
-    private function normalizeInternal($property_value)
+    private function normalizeArray($array)
     {
-        if ($property_value === null) {
-            return null;
+        $response = [];
+
+        foreach ($array as $key => $value) {
+            $response[$key] = $this->normalizeInternal($value);
         }
 
-        $type = gettype($property_value);
-        if ($type === 'resource' || $type === 'unknown type') {
-            throw new Exception('resource or unknown type cannot normalize');
+        return $response;
+    }
+
+    #endregion
+
+    #region Denormalize
+
+    /**
+     * @var NormalizationMetadata[]
+     */
+    private $normalization_metadata_lookup = [];
+
+    /**
+     * @param array $value
+     * @param Type $type
+     * @return NormalizableInterface|NormalizableInterface[]
+     */
+    public function denormalize($value, $type)
+    {
+        Assert::isArray($value, 'value');
+        Assert::isType($type, Type::class, 'type');
+
+        $class_name = $type->getClassName();
+
+        $reflection_class = new \ReflectionClass($class_name);
+        if ($type->isArray()) {
+            return $this->denormalizeArray($value, $type);
         }
 
-        if ($type === 'object') {
-            return $this->normalizeObject($property_value);
+        /** @var NormalizableInterface $instance */
+        $instance = $reflection_class->newInstance();
+        Assert::isType($instance, NormalizableInterface::class, 'type.class_name');
+
+        $normalization_metadata = $this->getNormalizationMetadata($instance, $class_name);
+
+        $properties = $reflection_class->getProperties();
+        foreach ($properties as $property) {
+            $property_name = $property->getName();
+
+            if (array_key_exists($property_name, $value) === true) {
+                $property_value = $value[$property_name];
+
+                if (
+                    $normalization_metadata !== null &&
+                    $normalization_metadata->offsetExists($property_name) === true
+                ) {
+                    $property_type = $normalization_metadata[$property_name];
+                    $property_value = $this->denormalize($property_value, $property_type);
+                }
+                $property->setValue($instance, $property_value);
+            }
         }
 
-        return $property_value;
+        return $instance;
     }
 
     /**
-     * @param mixed $property_value
-     * @return mixed
-     * @throws Exception
+     * @param NormalizableInterface $instance
+     * @param string $class_name
+     * @return NormalizationMetadata
      */
-    private function normalizeObject($property_value)
+    private function getNormalizationMetadata($instance, $class_name)
     {
-        if ($property_value instanceof NormalizableInterface) {
-            return $this->normalizeNormalizableInterface($property_value);
-        } else if ($property_value instanceof \JsonSerializable) {
-            return $property_value->jsonSerialize();
+        if (array_key_exists($class_name, $this->normalization_metadata_lookup) === false) {
+            $this->normalization_metadata_lookup[$class_name] = $instance->getNormalizationMetadata();
         }
 
-        throw new Exception('cannot denormalize');
+        return $this->normalization_metadata_lookup[$class_name];
     }
+
+    /**
+     * @param array $array
+     * @param Type $type
+     * @return NormalizableInterface[]
+     */
+    private function denormalizeArray($array, $type)
+    {
+        $instance_list = [];
+
+        $instance_type = clone $type;
+        $instance_type->setIsArray(false);
+
+        foreach ($array as $value) {
+            $instance_list[] = $this->denormalize($value, $instance_type);
+        }
+
+        return $instance_list;
+    }
+
+    #endregion
 }

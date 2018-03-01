@@ -2,6 +2,8 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
+use Fabs\Component\Assert\Assert;
+
 class Type
 {
     /** @var string */
@@ -15,6 +17,7 @@ class Type
      */
     public function __construct($class_name)
     {
+        Assert::isClassExists($class_name, 'class_name');
         $this->class_name = $class_name;
     }
 
@@ -42,5 +45,12 @@ class Type
     {
         $this->is_array = $is_array;
         return $this;
+    }
+
+    public function __clone()
+    {
+        $type = new Type($this->getClassName());
+        $type->is_array = $this->is_array;
+        return $type;
     }
 }

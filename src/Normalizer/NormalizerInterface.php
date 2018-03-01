@@ -8,12 +8,12 @@ interface NormalizerInterface
      * @param NormalizableInterface $value
      * @return array
      */
-    function normalize($value);
+    public function normalize($value);
 
     /**
      * @param array $value
      * @param Type $type
      * @return mixed
      */
-    function denormalize($value, $type);
+    public function denormalize($value, $type);
 }
