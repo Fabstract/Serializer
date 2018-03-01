@@ -131,7 +131,6 @@ class Normalizer implements NormalizerInterface
                 $property_value = $value[$property_name];
 
                 if (
-                    $normalization_metadata !== null &&
                     $normalization_metadata->offsetExists($property_name) === true
                 ) {
                     $property_type = $normalization_metadata[$property_name];
