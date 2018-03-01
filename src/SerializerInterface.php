@@ -12,22 +12,22 @@ interface SerializerInterface
      * @param mixed $data
      * @return string
      */
-    function serialize($data);
+    public function serialize($data);
 
     /**
      * @param string $data
      * @param Type $type
      * @return mixed
      */
-    function deserialize($data, $type);
+    public function deserialize($data, $type);
 
     /**
      * @return NormalizerInterface
      */
-    function getNormalizer();
+    public function getNormalizer();
 
     /**
      * @return EncoderInterface
      */
-    function getEncoder();
+    public function getEncoder();
 }
