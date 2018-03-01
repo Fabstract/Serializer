@@ -5,7 +5,8 @@ namespace Fabs\Component\Serializer\Normalizer;
 interface NormalizableInterface
 {
     /**
-     * @return NormalizationMetadata
+     * @param NormalizationMetadata $normalization_metadata
+     * @return void
      */
-    public function getNormalizationMetadata();
+    public function configureNormalizationMetadata($normalization_metadata);
 }

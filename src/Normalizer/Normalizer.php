@@ -145,7 +145,9 @@ class Normalizer implements NormalizerInterface
     private function getNormalizationMetadata($instance, $class_name)
     {
         if (array_key_exists($class_name, $this->normalization_metadata_lookup) === false) {
-            $this->normalization_metadata_lookup[$class_name] = $instance->getNormalizationMetadata();
+            $normalization_metadata = new NormalizationMetadata();
+            $instance->configureNormalizationMetadata($normalization_metadata);
+            $this->normalization_metadata_lookup[$class_name] = $normalization_metadata;
         }
 
         return $this->normalization_metadata_lookup[$class_name];
