@@ -2,8 +2,7 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
-use Fabs\Component\Assert\Assert;
-use Traversable;
+use Fabs\Component\Serializer\Assert;
 
 class NormalizationMetadata implements \ArrayAccess
 {
