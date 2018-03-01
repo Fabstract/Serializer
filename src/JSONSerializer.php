@@ -2,46 +2,27 @@
 
 namespace Fabs\Component\Serializer;
 
-use Fabs\Component\Event\EventEmitter;
 use Fabs\Component\Serializer\Encoder\EncoderInterface;
+use Fabs\Component\Serializer\Encoder\JSONEncoder;
+use Fabs\Component\Serializer\Normalizer\Normalizer;
 use Fabs\Component\Serializer\Normalizer\NormalizerInterface;
-use Fabs\Component\Serializer\Normalizer\Type;
 
-class JSONSerializer extends EventEmitter implements SerializerInterface
+class JSONSerializer extends EventEmitterSerializer
 {
-
-    /**
-     * @param mixed $data
-     * @return string
-     */
-    function serialize($data)
-    {
-        // TODO: Implement serialize() method.
-    }
-
-    /**
-     * @param string $data
-     * @param Type $type
-     * @return mixed
-     */
-    function deserialize($data, $type)
-    {
-        // TODO: Implement deserialize() method.
-    }
 
     /**
      * @return NormalizerInterface
      */
-    function getNormalizer()
+    public function getNormalizer()
     {
-        // TODO: Implement getNormalizer() method.
+        return new Normalizer();
     }
 
     /**
      * @return EncoderInterface
      */
-    function getEncoder()
+    public function getEncoder()
     {
-        // TODO: Implement getEncoder() method.
+        return new JSONEncoder();
     }
 }
