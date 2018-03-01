@@ -1,0 +1,37 @@
+{
+  "name": "fabstract/serializer",
+  "type": "library",
+  "description": "Serializer library for PHP",
+  "keywords": [
+    "php",
+    "serialize"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Ahmet Turk",
+      "email": "ahmetturk93@gmail.com",
+      "homepage": "https://github.com/fabstract"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Fabs\\Component\\Serializer\\": "src"
+    }
+  },
+  "require": {
+    "php": "^7.0",
+    "fabstract/assert": "dev-master",
+    "fabstract/event": "dev-master"
+  },
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "git@github.com:Fabstract/Assert.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:Fabstract/Event.git"
+    }
+  ]
+}
