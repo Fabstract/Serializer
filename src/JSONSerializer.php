@@ -2,6 +2,7 @@
 
 namespace Fabs\Component\Serializer;
 
+use Fabs\Component\Lazy\Lazy;
 use Fabs\Component\Serializer\Encoder\EncoderInterface;
 use Fabs\Component\Serializer\Encoder\JSONEncoder;
 use Fabs\Component\Serializer\Normalizer\Normalizer;
@@ -15,7 +16,7 @@ class JSONSerializer extends EventEmitterSerializer
      */
     public function getNormalizer()
     {
-        return new Normalizer();
+        return Lazy::load(Normalizer::class);
     }
 
     /**
@@ -23,6 +24,6 @@ class JSONSerializer extends EventEmitterSerializer
      */
     public function getEncoder()
     {
-        return new JSONEncoder();
+        return Lazy::load(JSONEncoder::class);
     }
 }

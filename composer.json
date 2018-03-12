@@ -22,7 +22,8 @@
   "require": {
     "php": "^7.0",
     "fabstract/assert": "dev-master",
-    "fabstract/event": "dev-master"
+    "fabstract/event": "dev-master",
+    "fabstract/lazy": "dev-master"
   },
   "repositories": [
     {
@@ -32,6 +33,10 @@
     {
       "type": "vcs",
       "url": "git@github.com:Fabstract/Event.git"
+    },
+    {
+      "type": "vcs",
+      "url": "git@github.com:Fabstract/Lazy.git"
     }
   ]
 }
