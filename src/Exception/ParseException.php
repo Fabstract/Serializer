@@ -2,7 +2,7 @@
 
 namespace Fabs\Component\Serializer\Exception;
 
-class JSONParseException extends Exception
+class ParseException extends Exception
 {
 
 }
