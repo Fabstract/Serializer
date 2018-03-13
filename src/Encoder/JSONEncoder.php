@@ -3,6 +3,7 @@
 namespace Fabs\Component\Serializer\Encoder;
 
 use Fabs\Component\Serializer\Assert;
+use Fabs\Component\Serializer\Exception\JSONParseException;
 
 class JSONEncoder implements EncoderInterface
 {
@@ -102,6 +103,7 @@ class JSONEncoder implements EncoderInterface
     /**
      * @param string $value
      * @return array
+     * @throws JSONParseException
      */
     public function decode($value)
     {
@@ -111,7 +113,17 @@ class JSONEncoder implements EncoderInterface
         $depth = $this->getDecodeDepth();
         $decode_options_combined = $this->combineOptions($this->decode_options);
 
-        return json_decode($value, $is_assoc, $depth, $decode_options_combined);
+        $decoded = json_decode($value, $is_assoc, $depth, $decode_options_combined);
+        $json_last_error = json_last_error();
+        if ($json_last_error !== JSON_ERROR_NONE) {
+            $exception_message
+                = sprintf('Cannot decode string to JSON. Error %s error_message %s',
+                $json_last_error,
+                json_last_error_msg());
+            throw new JSONParseException($exception_message);
+        }
+
+        return $decoded;
     }
 
     /**
