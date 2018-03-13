@@ -9,6 +9,11 @@ class JSONEncoder implements EncoderInterface
 
     /** @var int[] */
     private $encode_options = [];
+
+    /** @var bool */
+    private $decode_assoc = false;
+    /** @var int */
+    private $decode_depth = 512;
     /** @var int[] */
     private $decode_options = [];
 
@@ -25,6 +30,46 @@ class JSONEncoder implements EncoderInterface
         }
 
         return $this;
+    }
+
+    /**
+     * @param bool $decode_assoc
+     * @return JSONEncoder
+     */
+    public function setDecodeAssoc($decode_assoc)
+    {
+        Assert::isBoolean($decode_assoc, 'assoc');
+
+        $this->decode_assoc = $decode_assoc;
+        return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getDecodeAssoc()
+    {
+        return $this->decode_assoc;
+    }
+
+    /**
+     * @param int $decode_depth
+     * @return JSONEncoder
+     */
+    public function setDecodeDepth($decode_depth)
+    {
+        Assert::isPositive($decode_depth, 'depth');
+
+        $this->decode_depth = $decode_depth;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDecodeDepth()
+    {
+        return $this->decode_depth;
     }
 
     /**
@@ -62,8 +107,11 @@ class JSONEncoder implements EncoderInterface
     {
         Assert::isString($value);
 
+        $is_assoc = $this->getDecodeAssoc();
+        $depth = $this->getDecodeDepth();
         $decode_options_combined = $this->combineOptions($this->decode_options);
-        return json_decode($value, $decode_options_combined);
+
+        return json_decode($value, $is_assoc, $depth, $decode_options_combined);
     }
 
     /**
