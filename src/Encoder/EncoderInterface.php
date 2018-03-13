@@ -2,6 +2,8 @@
 
 namespace Fabs\Component\Serializer\Encoder;
 
+use Fabs\Component\Serializer\Exception\ParseException;
+
 interface EncoderInterface
 {
     /**
@@ -13,6 +15,7 @@ interface EncoderInterface
     /**
      * @param string $value
      * @return array
+     * @throws ParseException
      */
     function decode($value);
 }
