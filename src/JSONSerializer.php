@@ -26,6 +26,7 @@ class JSONSerializer extends EventEmitterSerializer
     {
         /** @var JSONEncoder $encoder */
         $encoder = Lazy::load(JSONEncoder::class);
+        $encoder->setDecodeAssoc(true);
         $encoder->addEncodeOption(JSON_PRESERVE_ZERO_FRACTION);
         return $encoder;
     }
