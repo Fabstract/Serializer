@@ -30,12 +30,16 @@ class Normalizer extends EventEmitterNormalizer
         Assert::isOneOfTypes($value, $allowed_type_list, 'value');
 
         if ($value instanceof NormalizableInterface) {
-            return $this->normalizeNormalizableInterface($value);
+            $normalized = $this->normalizeNormalizableInterface($value);
         } else if ($value instanceof \JsonSerializable) {
-            return $this->normalizeInternal($value->jsonSerialize());
+            $normalized = $this->normalizeValue($value->jsonSerialize());
+        } else {
+            throw new Exception('cannot normalize');
         }
 
-        throw new Exception('cannot normalize');
+        $this->emit(new NormalizationFinishedEvent($normalized));
+
+        return $normalized;
     }
 
     /**
@@ -43,7 +47,7 @@ class Normalizer extends EventEmitterNormalizer
      * @return mixed|null
      * @throws Exception
      */
-    private function normalizeInternal($value)
+    private function normalizeValue($value)
     {
         if ($value === null) {
             return null;
@@ -60,8 +64,6 @@ class Normalizer extends EventEmitterNormalizer
             return $this->normalizeArray($value);
         }
 
-        $this->emit(new NormalizationFinishedEvent($value));
-
         return $value;
     }
 
@@ -77,7 +79,7 @@ class Normalizer extends EventEmitterNormalizer
         $properties = $reflection_class->getProperties();
         foreach ($properties as $property) {
             $property_value = $property->getValue($value);
-            $response[$property->name] = $this->normalizeInternal($property_value);
+            $response[$property->name] = $this->normalizeValue($property_value);
         }
 
         return $response;
@@ -93,7 +95,7 @@ class Normalizer extends EventEmitterNormalizer
         $response = [];
 
         foreach ($array as $key => $value) {
-            $response[$key] = $this->normalizeInternal($value);
+            $response[$key] = $this->normalizeValue($value);
         }
 
         return $response;
