@@ -66,9 +66,9 @@ class Normalizer extends EventEmitterNormalizer
         }
 
         if ($type === 'object') {
-            return $this->normalizeInternal($value, ++$depth);
+            return $this->normalizeInternal($value, $depth + 1);
         } else if ($type === 'array') {
-            return $this->normalizeArray($value, ++$depth);
+            return $this->normalizeArray($value, $depth + 1);
         }
 
         return $value;
@@ -146,7 +146,7 @@ class Normalizer extends EventEmitterNormalizer
 
         $reflection_class = new \ReflectionClass($class_name);
         if ($type->isArray()) {
-            return $this->denormalizeArray($value, $type, ++$depth);
+            return $this->denormalizeArray($value, $type, $depth + 1);
         }
 
         /** @var NormalizableInterface $instance */
@@ -166,7 +166,7 @@ class Normalizer extends EventEmitterNormalizer
                     $normalization_metadata->offsetExists($property_name) === true
                 ) {
                     $property_type = $normalization_metadata[$property_name];
-                    $property_value = $this->denormalizeInternal($property_value, $property_type, ++$depth);
+                    $property_value = $this->denormalizeInternal($property_value, $property_type, $depth + 1);
                 }
                 $property->setValue($instance, $property_value);
             }
