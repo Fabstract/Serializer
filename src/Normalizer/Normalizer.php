@@ -137,39 +137,43 @@ class Normalizer extends EventEmitterNormalizer
      */
     private function denormalizeInternal($value, $type, $depth)
     {
-        Assert::isArray($value, 'value');
-        Assert::isType($type, Type::class, 'type');
+        $this->emit(new DenormalizationWillStartEvent($value, $type, $depth));
 
-        $this->emit(new DenormalizationWillStartEvent($value, $type));
+        if ($value !== null) {
+            Assert::isArray($value, 'value');
+            Assert::isType($type, Type::class, 'type');
 
-        $class_name = $type->getClassName();
+            $class_name = $type->getClassName();
 
-        $reflection_class = new \ReflectionClass($class_name);
-        if ($type->isArray()) {
-            return $this->denormalizeArray($value, $type, $depth + 1);
-        }
+            $reflection_class = new \ReflectionClass($class_name);
+            if ($type->isArray()) {
+                $instance = $this->denormalizeArray($value, $type, $depth + 1);
+            } else {
+                /** @var NormalizableInterface $instance */
+                $instance = $reflection_class->newInstance();
+                Assert::isType($instance, NormalizableInterface::class, 'type.class_name');
 
-        /** @var NormalizableInterface $instance */
-        $instance = $reflection_class->newInstance();
-        Assert::isType($instance, NormalizableInterface::class, 'type.class_name');
+                $normalization_metadata = $this->getNormalizationMetadata($instance, $class_name);
 
-        $normalization_metadata = $this->getNormalizationMetadata($instance, $class_name);
+                $properties = $reflection_class->getProperties();
+                foreach ($properties as $property) {
+                    $property_name = $property->getName();
 
-        $properties = $reflection_class->getProperties();
-        foreach ($properties as $property) {
-            $property_name = $property->getName();
+                    if (array_key_exists($property_name, $value) === true) {
+                        $property_value = $value[$property_name];
 
-            if (array_key_exists($property_name, $value) === true) {
-                $property_value = $value[$property_name];
-
-                if (
-                    $normalization_metadata->offsetExists($property_name) === true
-                ) {
-                    $property_type = $normalization_metadata[$property_name];
-                    $property_value = $this->denormalizeInternal($property_value, $property_type, $depth + 1);
+                        if (
+                            $normalization_metadata->offsetExists($property_name) === true
+                        ) {
+                            $property_type = $normalization_metadata[$property_name];
+                            $property_value = $this->denormalizeInternal($property_value, $property_type, $depth + 1);
+                        }
+                        $property->setValue($instance, $property_value);
+                    }
                 }
-                $property->setValue($instance, $property_value);
             }
+        } else {
+            $instance = null;
         }
 
         $this->emit(new DenormalizationFinishedEvent($instance, $depth));
