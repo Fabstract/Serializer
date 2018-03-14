@@ -13,16 +13,20 @@ class DenormalizationWillStartEvent extends Event
     private $array_to_denormalize = [];
     /** @var Type */
     private $type_to_denormalize = null;
+    /** @var int */
+    private $depth = 0;
 
     /**
      * DenormalizationWillStartEvent constructor.
      * @param array $array_to_denormalize
      * @param Type $type_to_denormalize
+     * @param int $depth
      */
-    function __construct($array_to_denormalize = [], $type_to_denormalize = null)
+    function __construct($array_to_denormalize = [], $type_to_denormalize = null, $depth = 0)
     {
         $this->array_to_denormalize = $array_to_denormalize;
         $this->type_to_denormalize = $type_to_denormalize;
+        $this->depth = $depth;
     }
 
     /**
@@ -58,6 +62,24 @@ class DenormalizationWillStartEvent extends Event
     public function setTypeToDenormalize($type_to_denormalize)
     {
         $this->type_to_denormalize = $type_to_denormalize;
+        return $this;
+    }
+
+    /**
+     * @return int
+     */
+    public function getDepth()
+    {
+        return $this->depth;
+    }
+
+    /**
+     * @param int $depth
+     * @return DenormalizationWillStartEvent
+     */
+    public function setDepth($depth)
+    {
+        $this->depth = $depth;
         return $this;
     }
 }
