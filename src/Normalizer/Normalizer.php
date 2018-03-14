@@ -13,12 +13,18 @@ class Normalizer extends EventEmitterNormalizer
 {
     #region Normalize
 
+    public function normalize($value)
+    {
+        return $this->normalizeInternal($value, 0);
+    }
+
     /**
      * @param NormalizableInterface|\JsonSerializable $value
+     * @param int $depth
      * @return array
      * @throws Exception
      */
-    public function normalize($value)
+    private function normalizeInternal($value, $depth)
     {
         $this->emit(new NormalizationWillStartEvent($value));
 
@@ -30,9 +36,9 @@ class Normalizer extends EventEmitterNormalizer
         Assert::isOneOfTypes($value, $allowed_type_list, 'value');
 
         if ($value instanceof NormalizableInterface) {
-            $normalized = $this->normalizeNormalizableInterface($value);
+            $normalized = $this->normalizeNormalizableInterface($value, $depth);
         } else if ($value instanceof \JsonSerializable) {
-            $normalized = $this->normalizeValue($value->jsonSerialize());
+            $normalized = $this->normalizeValue($value->jsonSerialize(), $depth);
         } else {
             throw new Exception('cannot normalize');
         }
@@ -44,10 +50,11 @@ class Normalizer extends EventEmitterNormalizer
 
     /**
      * @param mixed $value
+     * @param int $depth
      * @return mixed|null
      * @throws Exception
      */
-    private function normalizeValue($value)
+    private function normalizeValue($value, $depth)
     {
         if ($value === null) {
             return null;
@@ -59,9 +66,9 @@ class Normalizer extends EventEmitterNormalizer
         }
 
         if ($type === 'object') {
-            return $this->normalize($value);
+            return $this->normalizeInternal($value, ++$depth);
         } else if ($type === 'array') {
-            return $this->normalizeArray($value);
+            return $this->normalizeArray($value, $depth);
         }
 
         return $value;
@@ -69,9 +76,10 @@ class Normalizer extends EventEmitterNormalizer
 
     /**
      * @param NormalizableInterface $value
+     * @param int $depth
      * @return array
      */
-    private function normalizeNormalizableInterface($value)
+    private function normalizeNormalizableInterface($value, $depth)
     {
         $response = [];
 
@@ -79,7 +87,7 @@ class Normalizer extends EventEmitterNormalizer
         $properties = $reflection_class->getProperties();
         foreach ($properties as $property) {
             $property_value = $property->getValue($value);
-            $response[$property->name] = $this->normalizeValue($property_value);
+            $response[$property->name] = $this->normalizeValue($property_value, $depth);
         }
 
         return $response;
@@ -88,14 +96,15 @@ class Normalizer extends EventEmitterNormalizer
 
     /**
      * @param array $array
+     * @param int $depth
      * @return array
      */
-    private function normalizeArray($array)
+    private function normalizeArray($array, $depth)
     {
         $response = [];
 
         foreach ($array as $key => $value) {
-            $response[$key] = $this->normalizeValue($value);
+            $response[$key] = $this->normalizeValue($value, $depth);
         }
 
         return $response;
