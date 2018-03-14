@@ -43,7 +43,7 @@ class Normalizer extends EventEmitterNormalizer
             throw new Exception('cannot normalize');
         }
 
-        $this->emit(new NormalizationFinishedEvent($normalized));
+        $this->emit(new NormalizationFinishedEvent($normalized, $depth));
 
         return $normalized;
     }
@@ -68,7 +68,7 @@ class Normalizer extends EventEmitterNormalizer
         if ($type === 'object') {
             return $this->normalizeInternal($value, ++$depth);
         } else if ($type === 'array') {
-            return $this->normalizeArray($value, $depth);
+            return $this->normalizeArray($value, ++$depth);
         }
 
         return $value;
@@ -126,6 +126,17 @@ class Normalizer extends EventEmitterNormalizer
      */
     public function denormalize($value, $type)
     {
+        return $this->denormalizeInternal($value, $type, 0);
+    }
+
+    /**
+     * @param array $value
+     * @param Type $type
+     * @param int $depth
+     * @return NormalizableInterface|NormalizableInterface[]
+     */
+    private function denormalizeInternal($value, $type, $depth)
+    {
         Assert::isArray($value, 'value');
         Assert::isType($type, Type::class, 'type');
 
@@ -135,7 +146,7 @@ class Normalizer extends EventEmitterNormalizer
 
         $reflection_class = new \ReflectionClass($class_name);
         if ($type->isArray()) {
-            return $this->denormalizeArray($value, $type);
+            return $this->denormalizeArray($value, $type, ++$depth);
         }
 
         /** @var NormalizableInterface $instance */
@@ -155,7 +166,7 @@ class Normalizer extends EventEmitterNormalizer
                     $normalization_metadata->offsetExists($property_name) === true
                 ) {
                     $property_type = $normalization_metadata[$property_name];
-                    $property_value = $this->denormalize($property_value, $property_type);
+                    $property_value = $this->denormalizeInternal($property_value, $property_type, ++$depth);
                 }
                 $property->setValue($instance, $property_value);
             }
@@ -185,9 +196,10 @@ class Normalizer extends EventEmitterNormalizer
     /**
      * @param array $array
      * @param Type $type
+     * @param int $depth
      * @return NormalizableInterface[]
      */
-    private function denormalizeArray($array, $type)
+    private function denormalizeArray($array, $type, $depth)
     {
         $instance_list = [];
 
@@ -195,7 +207,7 @@ class Normalizer extends EventEmitterNormalizer
         $instance_type->setIsArray(false);
 
         foreach ($array as $value) {
-            $instance_list[] = $this->denormalize($value, $instance_type);
+            $instance_list[] = $this->denormalizeInternal($value, $instance_type, $depth);
         }
 
         return $instance_list;
