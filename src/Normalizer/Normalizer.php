@@ -172,7 +172,7 @@ class Normalizer extends EventEmitterNormalizer
             }
         }
 
-        $this->emit(new DenormalizationFinishedEvent($instance));
+        $this->emit(new DenormalizationFinishedEvent($instance, $depth));
 
         return $instance;
     }
