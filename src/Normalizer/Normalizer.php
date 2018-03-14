@@ -3,9 +3,13 @@
 namespace Fabs\Component\Serializer\Normalizer;
 
 use Fabs\Component\Serializer\Assert;
+use Fabs\Component\Serializer\Event\DenormalizationFinishedEvent;
+use Fabs\Component\Serializer\Event\DenormalizationWillStartEvent;
+use Fabs\Component\Serializer\Event\NormalizationFinishedEvent;
+use Fabs\Component\Serializer\Event\NormalizationWillStartEvent;
 use Fabs\Component\Serializer\Exception\Exception;
 
-class Normalizer implements NormalizerInterface
+class Normalizer extends EventEmitterNormalizer
 {
     #region Normalize
 
@@ -16,11 +20,13 @@ class Normalizer implements NormalizerInterface
      */
     public function normalize($value)
     {
+        $this->emit(new NormalizationWillStartEvent($value));
+
         $allowed_type_list =
-        [
-            NormalizableInterface::class,
-            \JsonSerializable::class
-        ];
+            [
+                NormalizableInterface::class,
+                \JsonSerializable::class
+            ];
         Assert::isOneOfTypes($value, $allowed_type_list, 'value');
 
         if ($value instanceof NormalizableInterface) {
@@ -53,6 +59,8 @@ class Normalizer implements NormalizerInterface
         } else if ($type === 'array') {
             return $this->normalizeArray($value);
         }
+
+        $this->emit(new NormalizationFinishedEvent($value));
 
         return $value;
     }
@@ -110,6 +118,8 @@ class Normalizer implements NormalizerInterface
         Assert::isArray($value, 'value');
         Assert::isType($type, Type::class, 'type');
 
+        $this->emit(new DenormalizationWillStartEvent($value, $type));
+
         $class_name = $type->getClassName();
 
         $reflection_class = new \ReflectionClass($class_name);
@@ -139,6 +149,8 @@ class Normalizer implements NormalizerInterface
                 $property->setValue($instance, $property_value);
             }
         }
+
+        $this->emit(new DenormalizationFinishedEvent($instance));
 
         return $instance;
     }
@@ -177,6 +189,4 @@ class Normalizer implements NormalizerInterface
 
         return $instance_list;
     }
-
-    #endregion
 }

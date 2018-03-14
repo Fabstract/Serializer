@@ -8,7 +8,7 @@ use Fabs\Component\Serializer\Encoder\JSONEncoder;
 use Fabs\Component\Serializer\Normalizer\Normalizer;
 use Fabs\Component\Serializer\Normalizer\NormalizerInterface;
 
-class JSONSerializer extends EventEmitterSerializer
+class JSONSerializer extends EventEmitterSerializerBase
 {
 
     /**

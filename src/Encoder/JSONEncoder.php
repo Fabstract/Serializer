@@ -3,9 +3,13 @@
 namespace Fabs\Component\Serializer\Encoder;
 
 use Fabs\Component\Serializer\Assert;
+use Fabs\Component\Serializer\Event\DecodingFinishedEvent;
+use Fabs\Component\Serializer\Event\DecodingWillStartEvent;
+use Fabs\Component\Serializer\Event\EncodingFinishedEvent;
+use Fabs\Component\Serializer\Event\EncodingWillStartEvent;
 use Fabs\Component\Serializer\Exception\ParseException;
 
-class JSONEncoder implements EncoderInterface
+class JSONEncoder extends EventEmitterEncoder
 {
 
     /** @var int[] */
@@ -96,8 +100,14 @@ class JSONEncoder implements EncoderInterface
     {
         Assert::isArray($value);
 
+        $this->emit(new EncodingWillStartEvent($value));
+
         $encode_options_combined = $this->combineOptions($this->encode_options);
-        return json_encode($value, $encode_options_combined);
+        $encoded = json_encode($value, $encode_options_combined);
+
+        $this->emit(new EncodingFinishedEvent($encoded));
+
+        return $encoded;
     }
 
     /**
@@ -108,6 +118,8 @@ class JSONEncoder implements EncoderInterface
     public function decode($value)
     {
         Assert::isString($value);
+
+        $this->emit(new DecodingWillStartEvent($value));
 
         $is_assoc = $this->getDecodeAssoc();
         $depth = $this->getDecodeDepth();
@@ -122,6 +134,8 @@ class JSONEncoder implements EncoderInterface
                 json_last_error_msg());
             throw new ParseException($exception_message);
         }
+
+        $this->emit(new DecodingFinishedEvent($decoded));
 
         return $decoded;
     }
