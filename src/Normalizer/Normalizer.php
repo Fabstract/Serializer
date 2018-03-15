@@ -207,7 +207,7 @@ class Normalizer extends EventEmitterNormalizer
     {
         $instance_list = [];
 
-        $instance_type = clone $type;
+        $instance_type = Type::createNew($type);
         $instance_type->setIsArray(false);
 
         foreach ($array as $value) {
