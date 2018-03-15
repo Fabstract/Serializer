@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Fabs\Component\Serializer\Event;
-
 
 use Fabs\Component\Event\Event;
 
