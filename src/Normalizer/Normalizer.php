@@ -26,7 +26,7 @@ class Normalizer extends EventEmitterNormalizer
      */
     private function normalizeInternal($value, $depth)
     {
-        $this->emit(new NormalizationWillStartEvent($value));
+        $this->emit(new NormalizationWillStartEvent($value, $depth));
 
         $allowed_type_list =
             [
