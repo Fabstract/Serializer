@@ -47,10 +47,16 @@ class Type
         return $this;
     }
 
-    public function __clone()
+    /**
+     * @param Type $type
+     * @return Type
+     */
+    public static function createNew($type)
     {
-        $type = new Type($this->getClassName());
-        $type->is_array = $this->is_array;
-        return $type;
+        Assert::isType($type, Type::class, 'type');
+
+        $new_type = new Type($type->getClassName());
+        $new_type->is_array = $type->is_array;
+        return $new_type;
     }
 }
