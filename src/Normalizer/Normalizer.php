@@ -34,6 +34,9 @@ class Normalizer extends EventEmitterNormalizer
                 $normalized_array[$key] =
                     $this->normalizeInternal($sub_value, $depth + 1);
             }
+
+            $this->emit(new NormalizationFinishedEvent($normalized_array, $depth));
+
             return $normalized_array;
         }
 
