@@ -28,6 +28,15 @@ class Normalizer extends EventEmitterNormalizer
     {
         $this->emit(new NormalizationWillStartEvent($value, $depth));
 
+        if (is_array($value) === true) {
+            $normalized_array = [];
+            foreach ($value as $key => $sub_value) {
+                $normalized_array[$key] =
+                    $this->normalizeInternal($sub_value, $depth + 1);
+            }
+            return $normalized_array;
+        }
+
         $allowed_type_list =
             [
                 NormalizableInterface::class,
