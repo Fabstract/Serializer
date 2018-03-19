@@ -2,25 +2,15 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
-use Fabs\Component\Lazy\Lazy;
 use Fabs\Component\Serializer\Assert;
 use Fabs\Component\Serializer\Event\DenormalizationFinishedEvent;
 use Fabs\Component\Serializer\Event\DenormalizationWillStartEvent;
 use Fabs\Component\Serializer\Event\NormalizationFinishedEvent;
 use Fabs\Component\Serializer\Event\NormalizationWillStartEvent;
 use Fabs\Component\Serializer\Exception\Exception;
-use Fabs\Component\Serializer\RenderModifier\RenderModifier;
 
 class Normalizer extends EventEmitterNormalizer
 {
-    /**
-     * @return RenderModifier
-     */
-    private function getRenderModifier()
-    {
-        return Lazy::load(RenderModifier::class);
-    }
-
     #region Normalize
 
     public function normalize($value)
@@ -36,12 +26,6 @@ class Normalizer extends EventEmitterNormalizer
      */
     private function normalizeInternal($value, $depth)
     {
-        if ($value instanceof NormalizableInterface) {
-            $normalization_metadata =
-                $this->getNormalizationMetadata($value);
-            $this->getRenderModifier()->modify($value, $normalization_metadata);
-        }
-
         $this->emit(new NormalizationWillStartEvent($value, $depth));
 
         if (is_array($value) === true) {
@@ -113,7 +97,30 @@ class Normalizer extends EventEmitterNormalizer
 
         $reflection_class = new \ReflectionClass(get_class($value));
         $properties = $reflection_class->getProperties();
+        $normalization_metadata = $this->getNormalizationMetadata($value);
+        $is_empty = $normalization_metadata->isRenderModificationMetadataEmpty();
         foreach ($properties as $property) {
+            if ($is_empty === false) {
+                $property_name = $property->getName();
+                if (in_array(
+                        $property_name,
+                        $normalization_metadata->getTransientPropertyList(),
+                        true) === true
+                ) {
+                    continue;
+                }
+
+                if (in_array(
+                        $property_name,
+                        $normalization_metadata->getRenderIfNotNullPropertyList(),
+                        true) === true
+                ) {
+                    $property_value = $property->getValue($value);
+                    if ($property_value === null) {
+                        continue;
+                    }
+                }
+            }
             $property_value = $property->getValue($value);
             $response[$property->name] = $this->normalizeValue($property_value, $depth);
         }

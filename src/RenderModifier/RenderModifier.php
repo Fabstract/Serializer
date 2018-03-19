@@ -7,6 +7,12 @@ use Fabs\Component\Serializer\Assert;
 use Fabs\Component\Serializer\Normalizer\NormalizableInterface;
 use Fabs\Component\Serializer\Normalizer\NormalizationMetadata;
 
+/**
+ * Class RenderModifier
+ * @package Fabs\Component\Serializer\RenderModifier
+ *
+ * @deprecated
+ */
 class RenderModifier
 {
     /**
