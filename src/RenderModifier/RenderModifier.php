@@ -49,14 +49,14 @@ class RenderModifier
             $normalization_metadata->getRenderIfNotNullPropertyList();
         foreach ($property_name_property_lookup as $property_name => $property) {
             if (in_array($property_name, $transient_property_list, true) === true) {
-                unset($value[$property_name]);
+                unset($value->$property_name);
                 continue;
             }
 
             if (in_array($property_name, $render_if_not_null_property_list, true) === true) {
                 $property_value = $property->getValue($value);
                 if ($property_value === null) {
-                    unset($value[$property_name]);
+                    unset($value->$property_name);
                     continue;
                 }
             }
