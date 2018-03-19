@@ -2,7 +2,7 @@
 
 namespace Fabstract\Component\Serializer\Encoder;
 
-use Fabs\Component\Event\EventEmitter;
+use Fabstract\Component\Event\EventEmitter;
 
 abstract class EventEmitterEncoder extends EventEmitter implements EncoderInterface
 {

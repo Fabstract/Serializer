@@ -2,7 +2,7 @@
 
 namespace Fabstract\Component\Serializer;
 
-use Fabs\Component\Event\ListenerInterface;
+use Fabstract\Component\Event\ListenerInterface;
 use Fabstract\Component\Serializer\Encoder\EventEmitterEncoder;
 use Fabstract\Component\Serializer\Normalizer\EventEmitterNormalizer;
 

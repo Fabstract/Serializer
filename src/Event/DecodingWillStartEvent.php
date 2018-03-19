@@ -2,7 +2,7 @@
 
 namespace Fabstract\Component\Serializer\Event;
 
-use Fabs\Component\Event\Event;
+use Fabstract\Component\Event\Event;
 
 class DecodingWillStartEvent extends Event
 {

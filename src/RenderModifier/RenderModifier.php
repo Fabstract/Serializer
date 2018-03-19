@@ -9,7 +9,7 @@ use Fabstract\Component\Serializer\Normalizer\NormalizationMetadata;
 
 /**
  * Class RenderModifier
- * @package Fabs\Component\Serializer\RenderModifier
+ * @package Fabstract\Component\Serializer\RenderModifier
  *
  * @deprecated
  */
