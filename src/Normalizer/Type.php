@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\Normalizer;
+namespace Fabstract\Component\Serializer\Normalizer;
 
-use Fabs\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\Assert;
 
 class Type
 {

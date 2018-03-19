@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabs\Component\Serializer\Event;
+namespace Fabstract\Component\Serializer\Event;
 
 class NormalizationWillStartEvent extends DepthAwareEvent
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace Fabs\Component\Serializer\Normalizer;
+namespace Fabstract\Component\Serializer\Normalizer;
 
-use Fabs\Component\Serializer\Assert;
-use Fabs\Component\Serializer\RenderModifier\RenderModificationMetadata;
+use Fabstract\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\RenderModifier\RenderModificationMetadata;
 
 class NormalizationMetadata implements \ArrayAccess
 {

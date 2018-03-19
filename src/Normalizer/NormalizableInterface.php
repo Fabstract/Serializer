@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabs\Component\Serializer\Normalizer;
+namespace Fabstract\Component\Serializer\Normalizer;
 
 interface NormalizableInterface
 {

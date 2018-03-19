@@ -1,10 +1,10 @@
 <?php
 
-namespace Fabs\Component\Serializer;
+namespace Fabstract\Component\Serializer;
 
 use Fabs\Component\Event\ListenerInterface;
-use Fabs\Component\Serializer\Encoder\EventEmitterEncoder;
-use Fabs\Component\Serializer\Normalizer\EventEmitterNormalizer;
+use Fabstract\Component\Serializer\Encoder\EventEmitterEncoder;
+use Fabstract\Component\Serializer\Normalizer\EventEmitterNormalizer;
 
 abstract class EventEmitterSerializerBase extends SerializerBase
 {

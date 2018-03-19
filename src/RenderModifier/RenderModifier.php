@@ -1,11 +1,11 @@
 <?php
 
-namespace Fabs\Component\Serializer\RenderModifier;
+namespace Fabstract\Component\Serializer\RenderModifier;
 
-use Fabs\Component\LINQ\LINQ;
-use Fabs\Component\Serializer\Assert;
-use Fabs\Component\Serializer\Normalizer\NormalizableInterface;
-use Fabs\Component\Serializer\Normalizer\NormalizationMetadata;
+use Fabstract\Component\LINQ\LINQ;
+use Fabstract\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\Normalizer\NormalizableInterface;
+use Fabstract\Component\Serializer\Normalizer\NormalizationMetadata;
 
 /**
  * Class RenderModifier

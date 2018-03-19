@@ -16,7 +16,7 @@
   ],
   "autoload": {
     "psr-4": {
-      "Fabs\\Component\\Serializer\\": "src"
+      "Fabstract\\Component\\Serializer\\": "src"
     }
   },
   "require": {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\Encoder;
+namespace Fabstract\Component\Serializer\Encoder;
 
-use Fabs\Component\Serializer\Exception\ParseException;
+use Fabstract\Component\Serializer\Exception\ParseException;
 
 interface EncoderInterface
 {

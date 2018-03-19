@@ -1,13 +1,13 @@
 <?php
 
-namespace Fabs\Component\Serializer\Normalizer;
+namespace Fabstract\Component\Serializer\Normalizer;
 
-use Fabs\Component\Serializer\Assert;
-use Fabs\Component\Serializer\Event\DenormalizationFinishedEvent;
-use Fabs\Component\Serializer\Event\DenormalizationWillStartEvent;
-use Fabs\Component\Serializer\Event\NormalizationFinishedEvent;
-use Fabs\Component\Serializer\Event\NormalizationWillStartEvent;
-use Fabs\Component\Serializer\Exception\Exception;
+use Fabstract\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\Event\DenormalizationFinishedEvent;
+use Fabstract\Component\Serializer\Event\DenormalizationWillStartEvent;
+use Fabstract\Component\Serializer\Event\NormalizationFinishedEvent;
+use Fabstract\Component\Serializer\Event\NormalizationWillStartEvent;
+use Fabstract\Component\Serializer\Exception\Exception;
 
 class Normalizer extends EventEmitterNormalizer
 {

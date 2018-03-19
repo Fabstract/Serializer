@@ -1,12 +1,10 @@
 <?php
 
+namespace Fabstract\Component\Serializer;
 
-namespace Fabs\Component\Serializer;
+use Fabstract\Component\Serializer\Exception\TypeConflictException;
 
-
-use Fabs\Component\Serializer\Exception\TypeConflictException;
-
-class Assert extends \Fabs\Component\Assert\Assert
+class Assert extends \Fabstract\Component\Assert\Assert
 {
 
     /**

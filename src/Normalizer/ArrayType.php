@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\Normalizer;
+namespace Fabstract\Component\Serializer\Normalizer;
 
-use Fabs\Component\Serializer\Exception\Exception;
+use Fabstract\Component\Serializer\Exception\Exception;
 
 class ArrayType extends Type
 {

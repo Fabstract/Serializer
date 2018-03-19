@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabs\Component\Serializer\Exception;
+namespace Fabstract\Component\Serializer\Exception;
 
 class Exception extends \Exception
 {

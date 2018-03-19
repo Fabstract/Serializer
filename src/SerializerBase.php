@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer;
+namespace Fabstract\Component\Serializer;
 
-use Fabs\Component\Serializer\Normalizer\Type;
+use Fabstract\Component\Serializer\Normalizer\Type;
 
 abstract class SerializerBase implements SerializerInterface
 {

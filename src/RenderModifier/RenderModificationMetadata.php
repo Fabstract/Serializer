@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\RenderModifier;
+namespace Fabstract\Component\Serializer\RenderModifier;
 
-use Fabs\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\Assert;
 
 class RenderModificationMetadata
 {

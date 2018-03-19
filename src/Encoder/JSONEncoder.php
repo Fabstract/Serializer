@@ -1,13 +1,13 @@
 <?php
 
-namespace Fabs\Component\Serializer\Encoder;
+namespace Fabstract\Component\Serializer\Encoder;
 
-use Fabs\Component\Serializer\Assert;
-use Fabs\Component\Serializer\Event\DecodingFinishedEvent;
-use Fabs\Component\Serializer\Event\DecodingWillStartEvent;
-use Fabs\Component\Serializer\Event\EncodingFinishedEvent;
-use Fabs\Component\Serializer\Event\EncodingWillStartEvent;
-use Fabs\Component\Serializer\Exception\ParseException;
+use Fabstract\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\Event\DecodingFinishedEvent;
+use Fabstract\Component\Serializer\Event\DecodingWillStartEvent;
+use Fabstract\Component\Serializer\Event\EncodingFinishedEvent;
+use Fabstract\Component\Serializer\Event\EncodingWillStartEvent;
+use Fabstract\Component\Serializer\Exception\ParseException;
 
 class JSONEncoder extends EventEmitterEncoder
 {

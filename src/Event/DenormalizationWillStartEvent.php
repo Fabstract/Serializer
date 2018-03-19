@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\Event;
+namespace Fabstract\Component\Serializer\Event;
 
-use Fabs\Component\Serializer\Normalizer\Type;
+use Fabstract\Component\Serializer\Normalizer\Type;
 
 class DenormalizationWillStartEvent extends DepthAwareEvent
 {

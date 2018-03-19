@@ -1,6 +1,6 @@
 <?php
 
-namespace Fabs\Component\Serializer\Encoder;
+namespace Fabstract\Component\Serializer\Encoder;
 
 use Fabs\Component\Event\EventEmitter;
 

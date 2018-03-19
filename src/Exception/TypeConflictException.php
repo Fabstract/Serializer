@@ -1,10 +1,8 @@
 <?php
 
+namespace Fabstract\Component\Serializer\Exception;
 
-namespace Fabs\Component\Serializer\Exception;
-
-
-use Fabs\Component\Assert\AssertionExceptionInterface;
+use Fabstract\Component\Assert\AssertionExceptionInterface;
 
 class TypeConflictException extends Exception implements AssertionExceptionInterface
 {

@@ -1,12 +1,12 @@
 <?php
 
-namespace Fabs\Component\Serializer;
+namespace Fabstract\Component\Serializer;
 
-use Fabs\Component\Lazy\Lazy;
-use Fabs\Component\Serializer\Encoder\EncoderInterface;
-use Fabs\Component\Serializer\Encoder\JSONEncoder;
-use Fabs\Component\Serializer\Normalizer\Normalizer;
-use Fabs\Component\Serializer\Normalizer\NormalizerInterface;
+use Fabstract\Component\Lazy\Lazy;
+use Fabstract\Component\Serializer\Encoder\EncoderInterface;
+use Fabstract\Component\Serializer\Encoder\JSONEncoder;
+use Fabstract\Component\Serializer\Normalizer\Normalizer;
+use Fabstract\Component\Serializer\Normalizer\NormalizerInterface;
 
 class JSONSerializer extends EventEmitterSerializerBase
 {

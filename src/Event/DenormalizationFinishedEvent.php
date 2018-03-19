@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabs\Component\Serializer\Event;
+namespace Fabstract\Component\Serializer\Event;
 
-use Fabs\Component\Serializer\Normalizer\NormalizableInterface;
+use Fabstract\Component\Serializer\Normalizer\NormalizableInterface;
 
 class DenormalizationFinishedEvent extends DepthAwareEvent
 {
