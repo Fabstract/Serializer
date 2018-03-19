@@ -3,11 +3,63 @@
 namespace Fabs\Component\Serializer\Normalizer;
 
 use Fabs\Component\Serializer\Assert;
+use Fabs\Component\Serializer\RenderModifier\RenderModificationMetadata;
 
 class NormalizationMetadata implements \ArrayAccess
 {
     /** @var Type[] */
     private $type_lookup = [];
+    /** @var RenderModificationMetadata */
+    private $render_modification_metadata = null;
+
+    function __construct()
+    {
+        $this->render_modification_metadata = new RenderModificationMetadata();
+    }
+
+    /**
+     * @param string $property_name
+     * @return NormalizationMetadata
+     */
+    public function setAsTransient($property_name)
+    {
+        $this->render_modification_metadata->setAsTransient($property_name);
+        return $this;
+    }
+
+    /**
+     * @param string $property_name
+     * @return NormalizationMetadata
+     */
+    public function setRenderIfNotNull($property_name)
+    {
+        $this->render_modification_metadata->setRenderIfNotNull($property_name);
+        return $this;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getTransientPropertyList()
+    {
+        return $this->render_modification_metadata->getTransientPropertyList();
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getRenderIfNotNullPropertyList()
+    {
+        return $this->render_modification_metadata->getRenderIfNotNullPropertyList();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isRenderModificationMetadataEmpty()
+    {
+        return $this->render_modification_metadata->isEmpty();
+    }
 
     /**
      * @param string $property_name

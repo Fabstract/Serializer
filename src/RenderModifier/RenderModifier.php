@@ -4,26 +4,29 @@ namespace Fabs\Component\Serializer\RenderModifier;
 
 use Fabs\Component\LINQ\LINQ;
 use Fabs\Component\Serializer\Assert;
+use Fabs\Component\Serializer\Normalizer\NormalizableInterface;
+use Fabs\Component\Serializer\Normalizer\NormalizationMetadata;
 
 class RenderModifier
 {
     /**
-     * @param RenderModifiable $value
+     * @param mixed $value
+     * @param NormalizationMetadata $normalization_metadata
      */
-    public function modify($value)
+    public function modify($value, $normalization_metadata)
     {
-        Assert::isImplements($value, RenderModifiable::class, 'value');
-        $this->modifyInternal($value);
+        Assert::isType($normalization_metadata, NormalizationMetadata::class, 'normalization_metadata');
+
+        $this->modifyInternal($value, $normalization_metadata);
     }
 
     /**
-     * @param RenderModifiable $value
+     * @param NormalizableInterface $value
+     * @param NormalizationMetadata $normalization_metadata
      */
-    private function modifyInternal($value)
+    private function modifyInternal($value, $normalization_metadata)
     {
-        $render_modification_metadata = new RenderModificationMetadata();
-        $value->configureRenderModificationMetadata($render_modification_metadata);
-        if ($render_modification_metadata->isEmpty()) {
+        if ($normalization_metadata->isRenderModificationMetadataEmpty() === true) {
             return;
         }
 
@@ -41,9 +44,9 @@ class RenderModifier
             ->toArray();
 
         $transient_property_list =
-            $render_modification_metadata->getTransientPropertyList();
+            $normalization_metadata->getTransientPropertyList();
         $render_if_not_null_property_list =
-            $render_modification_metadata->getRenderIfNotNullPropertyList();
+            $normalization_metadata->getRenderIfNotNullPropertyList();
         foreach ($property_name_property_lookup as $property_name => $property) {
             if (in_array($property_name, $transient_property_list, true) === true) {
                 unset($value[$property_name]);
@@ -56,11 +59,6 @@ class RenderModifier
                     unset($value[$property_name]);
                     continue;
                 }
-            }
-
-            $property_value = $property->getValue($value);
-            if ($property_value instanceof RenderModifiable) {
-                $this->modifyInternal($property_value);
             }
         }
     }

@@ -2,15 +2,25 @@
 
 namespace Fabs\Component\Serializer\Normalizer;
 
+use Fabs\Component\Lazy\Lazy;
 use Fabs\Component\Serializer\Assert;
 use Fabs\Component\Serializer\Event\DenormalizationFinishedEvent;
 use Fabs\Component\Serializer\Event\DenormalizationWillStartEvent;
 use Fabs\Component\Serializer\Event\NormalizationFinishedEvent;
 use Fabs\Component\Serializer\Event\NormalizationWillStartEvent;
 use Fabs\Component\Serializer\Exception\Exception;
+use Fabs\Component\Serializer\RenderModifier\RenderModifier;
 
 class Normalizer extends EventEmitterNormalizer
 {
+    /**
+     * @return RenderModifier
+     */
+    private function getRenderModifier()
+    {
+        return Lazy::load(RenderModifier::class);
+    }
+
     #region Normalize
 
     public function normalize($value)
@@ -26,6 +36,12 @@ class Normalizer extends EventEmitterNormalizer
      */
     private function normalizeInternal($value, $depth)
     {
+        if ($value instanceof NormalizableInterface) {
+            $normalization_metadata =
+                $this->getNormalizationMetadata($value);
+            $this->getRenderModifier()->modify($value, $normalization_metadata);
+        }
+
         $this->emit(new NormalizationWillStartEvent($value, $depth));
 
         if (is_array($value) === true) {
@@ -165,7 +181,7 @@ class Normalizer extends EventEmitterNormalizer
                 $instance = $reflection_class->newInstance();
                 Assert::isType($instance, NormalizableInterface::class, 'type.class_name');
 
-                $normalization_metadata = $this->getNormalizationMetadata($instance, $class_name);
+                $normalization_metadata = $this->getNormalizationMetadata($instance);
 
                 $properties = $reflection_class->getProperties();
                 foreach ($properties as $property) {
@@ -195,11 +211,13 @@ class Normalizer extends EventEmitterNormalizer
 
     /**
      * @param NormalizableInterface $instance
-     * @param string $class_name
      * @return NormalizationMetadata
      */
-    private function getNormalizationMetadata($instance, $class_name)
+    private function getNormalizationMetadata($instance)
     {
+        Assert::isImplements($instance, NormalizableInterface::class, 'instance');
+
+        $class_name = get_class($instance);
         if (array_key_exists($class_name, $this->normalization_metadata_lookup) === false) {
             $normalization_metadata = new NormalizationMetadata();
             $instance->configureNormalizationMetadata($normalization_metadata);
