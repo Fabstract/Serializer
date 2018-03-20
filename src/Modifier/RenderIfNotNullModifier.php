@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabstract\Component\Serializer\RenderModifier;
+namespace Fabstract\Component\Serializer\Modifier;
 
-class RenderIfNotNullCondition extends RenderConditionBase
+class RenderIfNotNullModifier extends ModifierBase
 {
     /**
      * @param mixed $value

@@ -1,10 +1,10 @@
 <?php
 
-namespace Fabstract\Component\Serializer\RenderModifier;
+namespace Fabstract\Component\Serializer\Modifier;
 
 use Fabstract\Component\Serializer\Assert;
 
-abstract class RenderConditionBase implements RenderConditionInterface
+abstract class ModifierBase implements ModifierInterface
 {
     /** @var bool */
     protected $should_render = true;

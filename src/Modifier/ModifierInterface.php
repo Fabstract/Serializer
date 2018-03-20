@@ -1,8 +1,8 @@
 <?php
 
-namespace Fabstract\Component\Serializer\RenderModifier;
+namespace Fabstract\Component\Serializer\Modifier;
 
-interface RenderConditionInterface
+interface ModifierInterface
 {
     /**
      * @param mixed $value

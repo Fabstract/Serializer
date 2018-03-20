@@ -3,8 +3,8 @@
 namespace Fabstract\Component\Serializer\Normalizer;
 
 use Fabstract\Component\Serializer\Assert;
-use Fabstract\Component\Serializer\RenderModifier\RenderConditionInterface;
-use Fabstract\Component\Serializer\RenderModifier\RenderModificationMetadata;
+use Fabstract\Component\Serializer\Modifier\ModifierInterface;
+use Fabstract\Component\Serializer\Modifier\RenderModificationMetadata;
 
 class NormalizationMetadata implements \ArrayAccess
 {
@@ -40,22 +40,22 @@ class NormalizationMetadata implements \ArrayAccess
 
     /**
      * @param string $property_name
-     * @param RenderConditionInterface $render_condition
+     * @param ModifierInterface $modifier
      * @return NormalizationMetadata
      */
-    public function setRenderCondition($property_name, $render_condition)
+    public function setModifier($property_name, $modifier)
     {
-        $this->render_modification_metadata->setRenderCondition($property_name, $render_condition);
+        $this->render_modification_metadata->setModifier($property_name, $modifier);
         return $this;
     }
 
     /**
      * @param string $property_name
-     * @return RenderConditionInterface[]
+     * @return ModifierInterface[]
      */
-    public function getPropertyConditionList($property_name)
+    public function getPropertyModifierList($property_name)
     {
-        return $this->render_modification_metadata->getPropertyConditionList($property_name);
+        return $this->render_modification_metadata->getPropertyModifierList($property_name);
     }
 
     /**

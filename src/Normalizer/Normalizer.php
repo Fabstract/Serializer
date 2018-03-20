@@ -101,15 +101,15 @@ class Normalizer extends EventEmitterNormalizer
         foreach ($properties as $property) {
             $property_name = $property->getName();
             $property_value = $property->getValue($value);
-            $condition_list = $normalization_metadata->getPropertyConditionList($property_name);
-            foreach ($condition_list as $condition) {
-                $condition->apply($property_value);
+            $modifier_list = $normalization_metadata->getPropertyModifierList($property_name);
+            foreach ($modifier_list as $modifier) {
+                $modifier->apply($property_value);
 
-                if ($condition->shouldUpdateValue()) {
-                    $value = $condition->getNewValue();
+                if ($modifier->shouldUpdateValue()) {
+                    $value = $modifier->getNewValue();
                 }
 
-                if ($condition->shouldRender() === false) {
+                if ($modifier->shouldRender() === false) {
                     continue 2;
                 }
             }
