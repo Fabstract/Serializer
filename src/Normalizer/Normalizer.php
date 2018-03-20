@@ -98,36 +98,27 @@ class Normalizer extends EventEmitterNormalizer
         $reflection_class = new \ReflectionClass(get_class($value));
         $properties = $reflection_class->getProperties(\ReflectionProperty::IS_PUBLIC);
         $normalization_metadata = $this->getNormalizationMetadata($value);
-        $is_empty = $normalization_metadata->isRenderModificationMetadataEmpty();
         foreach ($properties as $property) {
-            if ($is_empty === false) {
-                $property_name = $property->getName();
-                if (in_array(
-                        $property_name,
-                        $normalization_metadata->getTransientPropertyList(),
-                        true) === true
-                ) {
-                    continue;
+            $property_name = $property->getName();
+            $property_value = $property->getValue($value);
+            $condition_list = $normalization_metadata->getPropertyConditionList($property_name);
+            foreach ($condition_list as $condition) {
+                $condition->apply($property_value);
+
+                if ($condition->shouldUpdateValue()) {
+                    $value = $condition->getNewValue();
                 }
 
-                if (in_array(
-                        $property_name,
-                        $normalization_metadata->getRenderIfNotNullPropertyList(),
-                        true) === true
-                ) {
-                    $property_value = $property->getValue($value);
-                    if ($property_value === null) {
-                        continue;
-                    }
+                if ($condition->shouldRender() === false) {
+                    continue 2;
                 }
             }
-            $property_value = $property->getValue($value);
+
             $response[$property->name] = $this->normalizeValue($property_value, $depth);
         }
 
         return $response;
     }
-
 
     /**
      * @param array $array

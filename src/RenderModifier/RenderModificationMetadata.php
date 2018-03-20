@@ -6,10 +6,8 @@ use Fabstract\Component\Serializer\Assert;
 
 class RenderModificationMetadata
 {
-    /** @var string[] */
-    private $transient_property_list = [];
-    /** @var string[] */
-    private $render_if_not_null_property_list = [];
+    /** @var RenderConditionInterface[][] */
+    private $property_condition_list_lookup = [];
 
     /**
      * @param string $property_name
@@ -17,10 +15,7 @@ class RenderModificationMetadata
      */
     public function setAsTransient($property_name)
     {
-        Assert::isString($property_name, 'property_name');
-
-        $this->transient_property_list[] = $property_name;
-        return $this;
+        return $this->setRenderCondition($property_name, new RenderNeverCondition());
     }
 
     /**
@@ -29,34 +24,40 @@ class RenderModificationMetadata
      */
     public function setRenderIfNotNull($property_name)
     {
-        Assert::isString($property_name, 'property_name');
+        return $this->setRenderCondition($property_name, new RenderIfNotNullCondition());
+    }
 
-        $this->render_if_not_null_property_list[] = $property_name;
+    /**
+     * @param string $property_name
+     * @param RenderConditionInterface $render_condition
+     * @return RenderModificationMetadata
+     */
+    public function setRenderCondition($property_name, $render_condition)
+    {
+        Assert::isString($property_name, 'property_name');
+        Assert::isImplements(
+            $render_condition,
+            RenderConditionInterface::class,
+            'render_condition'
+        );
+
+        $this->property_condition_list_lookup[$property_name] =
+            $render_condition;
         return $this;
     }
 
     /**
-     * @return string[]
+     * @param string $property_name
+     * @return RenderConditionInterface[]
      */
-    public function getTransientPropertyList()
+    public function getPropertyConditionList($property_name)
     {
-        return $this->transient_property_list;
-    }
+        Assert::isString($property_name, 'property_name');
 
-    /**
-     * @return string[]
-     */
-    public function getRenderIfNotNullPropertyList()
-    {
-        return $this->render_if_not_null_property_list;
-    }
+        if (array_key_exists($property_name, $this->property_condition_list_lookup) !== true) {
+            return [];
+        }
 
-    /**
-     * @return bool
-     */
-    public function isEmpty()
-    {
-        return count($this->transient_property_list) === 0 &&
-            count($this->render_if_not_null_property_list) === 0;
+        return $this->property_condition_list_lookup[$property_name];
     }
 }

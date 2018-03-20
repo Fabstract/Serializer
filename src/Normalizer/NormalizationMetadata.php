@@ -3,6 +3,7 @@
 namespace Fabstract\Component\Serializer\Normalizer;
 
 use Fabstract\Component\Serializer\Assert;
+use Fabstract\Component\Serializer\RenderModifier\RenderConditionInterface;
 use Fabstract\Component\Serializer\RenderModifier\RenderModificationMetadata;
 
 class NormalizationMetadata implements \ArrayAccess
@@ -38,27 +39,23 @@ class NormalizationMetadata implements \ArrayAccess
     }
 
     /**
-     * @return string[]
+     * @param string $property_name
+     * @param RenderConditionInterface $render_condition
+     * @return NormalizationMetadata
      */
-    public function getTransientPropertyList()
+    public function setRenderCondition($property_name, $render_condition)
     {
-        return $this->render_modification_metadata->getTransientPropertyList();
+        $this->render_modification_metadata->setRenderCondition($property_name, $render_condition);
+        return $this;
     }
 
     /**
-     * @return string[]
+     * @param string $property_name
+     * @return RenderConditionInterface[]
      */
-    public function getRenderIfNotNullPropertyList()
+    public function getPropertyConditionList($property_name)
     {
-        return $this->render_modification_metadata->getRenderIfNotNullPropertyList();
-    }
-
-    /**
-     * @return bool
-     */
-    public function isRenderModificationMetadataEmpty()
-    {
-        return $this->render_modification_metadata->isEmpty();
+        return $this->render_modification_metadata->getPropertyConditionList($property_name);
     }
 
     /**
