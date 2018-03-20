@@ -41,7 +41,7 @@ class RenderModificationMetadata
             'render_condition'
         );
 
-        $this->property_condition_list_lookup[$property_name] =
+        $this->property_condition_list_lookup[$property_name][] =
             $render_condition;
         return $this;
     }
