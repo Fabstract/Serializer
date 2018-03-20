@@ -11,7 +11,7 @@ use Fabstract\Component\Serializer\Normalizer\NormalizationMetadata;
  * Class RenderModifier
  * @package Fabstract\Component\Serializer\RenderModifier
  *
- * @deprecated
+ * @deprecated this class is evil
  */
 class RenderModifier
 {
@@ -38,7 +38,7 @@ class RenderModifier
 
         $class_name = get_class($value);
         $reflection_class = new \ReflectionClass($class_name);
-        $properties = $reflection_class->getProperties();
+        $properties = $reflection_class->getProperties(\ReflectionProperty::IS_PUBLIC);
         /** @var \ReflectionProperty[] $property_name_property_lookup */
         $property_name_property_lookup = LINQ::from($properties)
             ->map(function ($property) {
