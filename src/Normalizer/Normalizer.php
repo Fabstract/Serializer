@@ -96,7 +96,7 @@ class Normalizer extends EventEmitterNormalizer
         $response = [];
 
         $reflection_class = new \ReflectionClass(get_class($value));
-        $properties = $reflection_class->getProperties();
+        $properties = $reflection_class->getProperties(\ReflectionProperty::IS_PUBLIC);
         $normalization_metadata = $this->getNormalizationMetadata($value);
         $is_empty = $normalization_metadata->isRenderModificationMetadataEmpty();
         foreach ($properties as $property) {
