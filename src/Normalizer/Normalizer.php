@@ -190,7 +190,7 @@ class Normalizer extends EventEmitterNormalizer
 
                 $normalization_metadata = $this->getNormalizationMetadata($instance);
 
-                $properties = $reflection_class->getProperties();
+                $properties = $reflection_class->getProperties(\ReflectionProperty::IS_PUBLIC);
                 foreach ($properties as $property) {
                     $property_name = $property->getName();
 
