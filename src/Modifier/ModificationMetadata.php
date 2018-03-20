@@ -4,14 +4,14 @@ namespace Fabstract\Component\Serializer\Modifier;
 
 use Fabstract\Component\Serializer\Assert;
 
-class RenderModificationMetadata
+class ModificationMetadata
 {
     /** @var ModifierInterface[][] */
     private $property_modifier_list_lookup = [];
 
     /**
      * @param string $property_name
-     * @return RenderModificationMetadata
+     * @return ModificationMetadata
      */
     public function setAsTransient($property_name)
     {
@@ -20,7 +20,7 @@ class RenderModificationMetadata
 
     /**
      * @param string $property_name
-     * @return RenderModificationMetadata
+     * @return ModificationMetadata
      */
     public function setRenderIfNotNull($property_name)
     {
@@ -30,7 +30,7 @@ class RenderModificationMetadata
     /**
      * @param string $property_name
      * @param ModifierInterface $modifier
-     * @return RenderModificationMetadata
+     * @return ModificationMetadata
      */
     public function setModifier($property_name, $modifier)
     {

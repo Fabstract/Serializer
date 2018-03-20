@@ -4,18 +4,18 @@ namespace Fabstract\Component\Serializer\Normalizer;
 
 use Fabstract\Component\Serializer\Assert;
 use Fabstract\Component\Serializer\Modifier\ModifierInterface;
-use Fabstract\Component\Serializer\Modifier\RenderModificationMetadata;
+use Fabstract\Component\Serializer\Modifier\ModificationMetadata;
 
 class NormalizationMetadata implements \ArrayAccess
 {
     /** @var Type[] */
     private $type_lookup = [];
-    /** @var RenderModificationMetadata */
-    private $render_modification_metadata = null;
+    /** @var ModificationMetadata */
+    private $modification_metadata = null;
 
-    function __construct()
+    public function __construct()
     {
-        $this->render_modification_metadata = new RenderModificationMetadata();
+        $this->modification_metadata = new ModificationMetadata();
     }
 
     /**
@@ -24,7 +24,7 @@ class NormalizationMetadata implements \ArrayAccess
      */
     public function setAsTransient($property_name)
     {
-        $this->render_modification_metadata->setAsTransient($property_name);
+        $this->modification_metadata->setAsTransient($property_name);
         return $this;
     }
 
@@ -34,7 +34,7 @@ class NormalizationMetadata implements \ArrayAccess
      */
     public function setRenderIfNotNull($property_name)
     {
-        $this->render_modification_metadata->setRenderIfNotNull($property_name);
+        $this->modification_metadata->setRenderIfNotNull($property_name);
         return $this;
     }
 
@@ -45,7 +45,7 @@ class NormalizationMetadata implements \ArrayAccess
      */
     public function setModifier($property_name, $modifier)
     {
-        $this->render_modification_metadata->setModifier($property_name, $modifier);
+        $this->modification_metadata->setModifier($property_name, $modifier);
         return $this;
     }
 
@@ -55,7 +55,7 @@ class NormalizationMetadata implements \ArrayAccess
      */
     public function getPropertyModifierList($property_name)
     {
-        return $this->render_modification_metadata->getPropertyModifierList($property_name);
+        return $this->modification_metadata->getPropertyModifierList($property_name);
     }
 
     /**
