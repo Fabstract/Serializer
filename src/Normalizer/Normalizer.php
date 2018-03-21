@@ -8,9 +8,22 @@ use Fabstract\Component\Serializer\Event\DenormalizationWillStartEvent;
 use Fabstract\Component\Serializer\Event\NormalizationFinishedEvent;
 use Fabstract\Component\Serializer\Event\NormalizationWillStartEvent;
 use Fabstract\Component\Serializer\Exception\Exception;
+use Fabstract\Component\Serializer\Modifier\RenderGroupModifier;
 
 class Normalizer extends EventEmitterNormalizer
 {
+    private $selected_render_tag_list = [];
+
+    /**
+     * @param string $render_tag
+     */
+    public function setRenderTag($render_tag)
+    {
+        Assert::isString($render_tag, 'render_tag');
+
+        $this->selected_render_tag_list[] = $render_tag;
+    }
+
     #region Normalize
 
     public function normalize($value)
@@ -103,7 +116,11 @@ class Normalizer extends EventEmitterNormalizer
             $property_value = $property->getValue($value);
             $modifier_list = $normalization_metadata->getPropertyModifierList($property_name);
             foreach ($modifier_list as $modifier) {
-                $modifier->apply($property_value);
+                if ($modifier instanceof RenderGroupModifier) {
+                    $modifier->apply($property_value, $this->selected_render_tag_list);
+                } else {
+                    $modifier->apply($property_value);
+                }
 
                 if ($modifier->shouldUpdateValue()) {
                     $value = $modifier->getNewValue();
