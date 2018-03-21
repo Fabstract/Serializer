@@ -29,6 +29,18 @@ class ModificationMetadata
 
     /**
      * @param string $property_name
+     * @param string[] $render_tag_list
+     * @return ModificationMetadata
+     */
+    public function setPropertyRenderTagList($property_name, $render_tag_list)
+    {
+        Assert::isArrayOfString($render_tag_list, 'render_tag_list');
+
+        return $this->setModifier($property_name, new RenderGroupModifier($render_tag_list));
+    }
+
+    /**
+     * @param string $property_name
      * @param ModifierInterface $modifier
      * @return ModificationMetadata
      */
