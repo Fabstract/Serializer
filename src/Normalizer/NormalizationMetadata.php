@@ -43,9 +43,9 @@ class NormalizationMetadata implements \ArrayAccess
      * @param string[] $render_tag_list
      * @return NormalizationMetadata
      */
-    public function setRenderTagList($property_name, $render_tag_list)
+    public function addRenderTagList($property_name, $render_tag_list)
     {
-        $this->modification_metadata->setRenderTagList($property_name, $render_tag_list);
+        $this->modification_metadata->addRenderTagList($property_name, $render_tag_list);
         return $this;
     }
 

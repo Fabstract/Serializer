@@ -17,7 +17,7 @@ class Normalizer extends EventEmitterNormalizer
     /**
      * @param string $render_tag
      */
-    public function setRenderTag($render_tag)
+    public function addRenderTag($render_tag)
     {
         Assert::isString($render_tag, 'render_tag');
 
