@@ -32,7 +32,7 @@ class ModificationMetadata
      * @param string[] $render_tag_list
      * @return ModificationMetadata
      */
-    public function setPropertyRenderTagList($property_name, $render_tag_list)
+    public function setRenderTagList($property_name, $render_tag_list)
     {
         Assert::isArrayOfString($render_tag_list, 'render_tag_list');
 
