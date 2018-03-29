@@ -21,27 +21,9 @@
   },
   "require": {
     "php": "^7.0",
-    "fabstract/assert": "dev-master",
-    "fabstract/event": "dev-master",
-    "fabstract/lazy": "dev-master",
-    "fabstract/linq": "dev-master"
-  },
-  "repositories": [
-    {
-      "type": "vcs",
-      "url": "git@github.com:Fabstract/Assert.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:Fabstract/Event.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:Fabstract/Lazy.git"
-    },
-    {
-      "type": "vcs",
-      "url": "git@github.com:Fabstract/LINQ.git"
-    }
-  ]
+    "fabstract/assert": "^0.1.0",
+    "fabstract/event": "^0.2.0",
+    "fabstract/lazy": "^0.2.0",
+    "fabstract/linq": "^0.1.0"
+  }
 }
