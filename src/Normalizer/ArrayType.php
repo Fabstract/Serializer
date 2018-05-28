@@ -13,6 +13,7 @@ class ArrayType extends Type
 
     public function setIsArray($is_array)
     {
+        /** @noinspection PhpUnhandledExceptionInspection */
         throw new Exception('setIsArray method cannot be called on ' . ArrayType::class);
     }
 }

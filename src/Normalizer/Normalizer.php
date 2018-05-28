@@ -1,5 +1,9 @@
 <?php
 
+/** @noinspection PhpUnhandledExceptionInspection */
+
+/** @noinspection PhpDocMissingThrowsInspection */
+
 namespace Fabstract\Component\Serializer\Normalizer;
 
 use Fabstract\Component\Serializer\Assert;
@@ -35,7 +39,6 @@ class Normalizer extends EventEmitterNormalizer
      * @param NormalizableInterface|\JsonSerializable $value
      * @param int $depth
      * @return array
-     * @throws Exception
      */
     private function normalizeInternal($value, $depth)
     {

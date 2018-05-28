@@ -4,6 +4,7 @@
 namespace Fabstract\Component\Serializer;
 
 
+use Fabstract\Component\Serializer\Exception\ParseException;
 use Fabstract\Component\Serializer\Normalizer\Type;
 
 abstract class Serializer implements SerializerInterface
@@ -23,6 +24,7 @@ abstract class Serializer implements SerializerInterface
      * @param string $data
      * @param Type $type
      * @return mixed
+     * @throws ParseException
      */
     public function deserialize($data, $type)
     {
