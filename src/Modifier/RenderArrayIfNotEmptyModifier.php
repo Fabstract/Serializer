@@ -12,8 +12,8 @@ class RenderArrayIfNotEmptyModifier extends ModifierBase
      */
     public function apply($value, $selected_render_tag_list = [])
     {
-        if (is_array($value) && count($value) === 0) {
-            $this->setShouldRender(false);
+        if (is_array($value)) {
+            $this->setShouldRender(count($value) > 0);
         }
     }
 }

@@ -40,6 +40,16 @@ class NormalizationMetadata implements \ArrayAccess
 
     /**
      * @param string $property_name
+     * @return NormalizationMetadata
+     */
+    public function setRenderArrayIfNotEmpty($property_name)
+    {
+        $this->modification_metadata->setRenderArrayIfNotEmpty($property_name);
+        return $this;
+    }
+
+    /**
+     * @param string $property_name
      * @param string[] $render_tag_list
      * @return NormalizationMetadata
      */

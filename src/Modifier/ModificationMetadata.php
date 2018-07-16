@@ -29,6 +29,15 @@ class ModificationMetadata
 
     /**
      * @param string $property_name
+     * @return ModificationMetadata
+     */
+    public function setRenderArrayIfNotEmpty($property_name)
+    {
+        return $this->setModifier($property_name, new RenderArrayIfNotEmptyModifier());
+    }
+
+    /**
+     * @param string $property_name
      * @param string[] $render_tag_list
      * @return ModificationMetadata
      */
