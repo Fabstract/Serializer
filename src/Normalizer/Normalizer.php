@@ -258,8 +258,8 @@ class Normalizer extends EventEmitterNormalizer
         $instance_type = Type::createNew($type);
         $instance_type->setIsArray(false);
 
-        foreach ($array as $value) {
-            $instance_list[] = $this->denormalizeInternal($value, $instance_type, $depth);
+        foreach ($array as $key => $value) {
+            $instance_list[$key] = $this->denormalizeInternal($value, $instance_type, $depth);
         }
 
         return $instance_list;
